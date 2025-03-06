@@ -16,22 +16,25 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post('/login', { email, password });
+      const res = await axios.post('https://api.ashyo.fullstackdev.uz/auth/login', { email, password });
       setUser(res.data);
       localStorage.setItem('user', JSON.stringify(res.data));
       return res.data;
     } catch (error) {
+      console.error("Login error: ", error);
+      // Agar kerak bo'lsa, error.response?.data ni qaytaring
       throw error;
     }
   };
 
-  const register = async (name, email, password) => {
+  const register = async (fullname, email, password) => {
     try {
-      const res = await axios.post('/register', { name, email, password });
+      const res = await axios.post('https://api.ashyo.fullstackdev.uz/auth/register', { fullname, email, password });
       setUser(res.data);
       localStorage.setItem('user', JSON.stringify(res.data));
       return res.data;
     } catch (error) {
+      console.error("Register error: ", error);
       throw error;
     }
   };

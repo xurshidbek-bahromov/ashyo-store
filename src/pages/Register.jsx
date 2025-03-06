@@ -1,13 +1,16 @@
-import React, { useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+// src/pages/Register.jsx
+import React, { useState, useContext, useEffect } from 'react';
+import { Form, Input, Button, Alert } from 'antd';
 import { AuthContext } from '../context/AuthContext';
-import { notification, Form, Input, Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [form] = Form.useForm();
   const { user, register } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
 
+  // Agar foydalanuvchi allaqachon tizimga kirgan bo'lsa, avtomatik profile o'ting
   useEffect(() => {
     if (user) {
       navigate('/profile');
@@ -16,28 +19,22 @@ const Register = () => {
 
   const onFinish = async (values) => {
     try {
+      setErrorMessage(''); // Xatolik xabarini tozalash
       await register(values.name, values.email, values.password);
-      notification.success({
-        message: 'Ro\'yxatdan o\'tish muvaffaqiyatli!',
-        description: 'Siz tizimga kirdingiz.'
-      });
       navigate('/profile');
     } catch (error) {
-      notification.error({
-        message: 'Xatolik!',
-        description: error.response?.data?.message || 'Ro\'yxatdan o\'tishda xatolik yuz berdi.'
-      });
+      // Agar backend 404 yoki boshqa xato javobini qaytarsa, u yerda xatolik xabarini ko'rsatamiz
+      const message =
+        error.response?.data?.message ||
+        'Ro\'yxatdan o\'tishda xatolik yuz berdi. Iltimos, ma\'lumotlarni tekshiring yoki keyinroq urinib ko\'ring.';
+      setErrorMessage(message);
     }
   };
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border rounded shadow bg-white">
       <h2 className="text-2xl font-semibold mb-6">Register</h2>
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={onFinish}
-      >
+      <Form form={form} layout="vertical" onFinish={onFinish}>
         <Form.Item
           label="Ism"
           name="name"
@@ -59,6 +56,12 @@ const Register = () => {
         >
           <Input.Password />
         </Form.Item>
+        {/* Agar errorMessage ni set qilsak, u yerda Alert komponenti orqali xabar ko'rsatiladi */}
+        {errorMessage && (
+          <Form.Item>
+            <Alert message={errorMessage} type="error" showIcon />
+          </Form.Item>
+        )}
         <Form.Item>
           <Button type="primary" htmlType="submit" block>
             Ro'yxatdan o'tish

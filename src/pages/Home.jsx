@@ -14,7 +14,6 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative">
-      {/* Banner orqa rasmi */}
       <div className="absolute inset-0">
         <img
           src="https://source.unsplash.com/1600x900/?store"
@@ -31,7 +30,6 @@ const Home = () => {
           Your modern online store experience
         </p>
       </div>
-      {/* Profil bo‘limi */}
       <div className="mt-8 w-full max-w-md relative z-10">
         {user ? (
           <Card

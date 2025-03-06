@@ -4,7 +4,13 @@ import { AuthContext } from '../context/AuthContext';
 import { ThemeContext } from '../context/ThemeContext';
 import { CartContext } from '../context/CartContext';
 import { Button, Switch } from 'antd';
-import { UserOutlined, BulbOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { 
+  LoginOutlined, 
+  LogoutOutlined, 
+  UserOutlined, 
+  ShoppingCartOutlined, 
+  BulbOutlined 
+} from '@ant-design/icons';
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
@@ -24,36 +30,39 @@ const Navbar = () => {
           Ashyo-Store
         </Link>
       </div>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-6">
         <Switch
           checked={darkMode}
           onChange={toggleTheme}
           checkedChildren={<BulbOutlined />}
           unCheckedChildren={<BulbOutlined />}
         />
-        <Link to="/products" className="hover:text-gray-200 transition-colors">
-          Products
+        <Link to="/products" className="p-2 rounded-md hover:bg-blue-800 text-gray-200 transition-colors flex items-center">
+          <ShoppingCartOutlined className="mr-1" /> Products
         </Link>
-        <Link to="/cart" className="hover:text-gray-200 transition-colors flex items-center">
-          <ShoppingCartOutlined className="mr-1" />
-          Cart ({getTotalItems()})
+        <Link to="/cart" className="p-2 rounded-md hover:bg-blue-800 text-gray-200 transition-colors flex items-center">
+          <ShoppingCartOutlined className="mr-1" /> Cart ({getTotalItems()})
         </Link>
         {user ? (
           <>
-            <Link to="/profile" className="hover:text-gray-200 transition-colors">
-              Profile
+            <Link to="/profile" className="p-2 rounded-md hover:bg-blue-800 text-gray-200 transition-colors flex items-center">
+              <UserOutlined className="mr-1" /> Profile
             </Link>
-            <Button type="primary" onClick={handleLogout}>
+            <Button 
+              type="primary" 
+              onClick={handleLogout} 
+              icon={<LogoutOutlined />}
+            >
               Logout
             </Button>
           </>
         ) : (
           <>
-            <Link to="/login" className="hover:text-gray-200 transition-colors">
-              Login
+            <Link to="/login" className="p-2 rounded-md hover:bg-blue-800 text-gray-200 transition-colors flex items-center">
+              <LoginOutlined className="mr-1" /> Login
             </Link>
-            <Link to="/register" className="hover:text-gray-200 transition-colors">
-              Register
+            <Link to="/register" className="p-2 rounded-md hover:bg-blue-800 text-gray-200 transition-colors flex items-center">
+              <UserOutlined className="mr-1" /> Register
             </Link>
           </>
         )}

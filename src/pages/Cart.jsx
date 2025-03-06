@@ -29,7 +29,7 @@ const Cart = () => {
         dataSource={cart}
         renderItem={(item) => (
           <List.Item
-            className="transition transform hover:scale-105"
+            className="rounded-md p-8 transition transform cursor-pointer hover:shadow-lg"
             actions={[
               <InputNumber
                 min={1}

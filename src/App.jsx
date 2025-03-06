@@ -9,6 +9,7 @@ import Products from './pages/Products';
 import Cart from './pages/Cart';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
+import ScrollProducts from './components/ScrollProducts'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
       <ErrorBoundary>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/products" element={<ScrollProducts />} />
           <Route path="/products" element={<Products />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
@@ -28,7 +30,7 @@ const App = () => {
                 <Profile />
               </ProtectedRoute>
             }
-          />
+            />
         </Routes>
       </ErrorBoundary>
     </div>

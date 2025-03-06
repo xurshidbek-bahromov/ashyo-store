@@ -6,20 +6,23 @@ class ErrorBoundary extends React.Component {
         this.state = { hasError: false };
     }
 
-    static getDerivedStateFromError(error) {
+    static getDerivedStateFromError() {
+
+        // Update state so the next render will show the fallback UI.
         return { hasError: true };
     }
 
-    componentDidCatch(error, errorInfo) {
-        // Bu yerda xatoliklarni log qilish yoki serverga yuborish mumkin
-        console.error('ErrorBoundary caught an error', error, errorInfo);
+    componentDidCatch(errorInfo) {
+        console.error("Error caught in ErrorBoundary:", errorInfo);
+
     }
 
     render() {
         if (this.state.hasError) {
-            return <h1>Nimadir noto'g'ri ketdi.</h1>;
+            return <h1>Something went wrong. Please try again later.</h1>;
         }
-        return this.props.children;
+
+        return this.props.children; 
     }
 }
 
