@@ -3,10 +3,24 @@ import React, { createContext, useState, useEffect } from 'react';
 export const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  // LocalStorage da saqlangan tema holatini o'qiymiz, aks holda default light
   const getInitialTheme = () => {
     const storedTheme = localStorage.getItem('theme');
-    return storedTheme ? JSON.parse(storedTheme) : false; // false - light mode
+    if (storedTheme === null) return false;
+    try {
+        const parsedTheme = JSON.parse(storedTheme);
+        // Check if it's a valid boolean
+        if (typeof parsedTheme === 'boolean') {
+            return parsedTheme;
+        } else {
+             // localStorage value is not valid data
+            console.error('Invalid theme data in localStorage:', storedTheme);
+            return false; // Default to light mode
+        }
+    } catch (error) {
+      // JSON.parse failed - probably not valid JSON
+      console.error('Error parsing theme from localStorage:', error);
+      return false; // Default to light mode
+    }
   };
 
   const [darkMode, setDarkMode] = useState(getInitialTheme());

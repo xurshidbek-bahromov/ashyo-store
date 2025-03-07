@@ -1,10 +1,13 @@
 import React, { useContext } from 'react';
+import { ThemeContext } from '../context/ThemeContext'; // Import ThemeContext
 import { CartContext } from '../context/CartContext';
 import { List, Button, InputNumber, Typography, Divider } from 'antd';
 
 const { Title, Text } = Typography;
 
 const Cart = () => {
+  const { darkMode } = useContext(ThemeContext); // Use darkMode from ThemeContext
+
   const {
     cart,
     removeFromCart,
@@ -22,7 +25,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className={`container mx-auto p-4 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
       <Title level={2}>Savatcha</Title>
       <List
         itemLayout="horizontal"

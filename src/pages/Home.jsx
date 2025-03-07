@@ -1,60 +1,154 @@
-import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Card, Button, Avatar } from 'antd';
+// src/pages/Home.jsx
+import React, { useState, useEffect, useContext } from 'react';
+import { Carousel, Button, Spin, Card, notification } from 'antd';
+import { ThemeContext } from '../context/ThemeContext';
 import { AuthContext } from '../context/AuthContext';
-import { UserOutlined } from '@ant-design/icons';
+import { CartContext } from '../context/CartContext';
+import { FavoritesContext } from '../context/FavoritesContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { 
+  HeartOutlined, 
+  HeartTwoTone, 
+  ShoppingCartOutlined, 
+  SearchOutlined 
+} from '@ant-design/icons';
 
 const Home = () => {
+  const { darkMode } = useContext(ThemeContext);
   const { user } = useContext(AuthContext);
+  const { addToCart } = useContext(CartContext);
+  const { toggleFavorite, isFavorite } = useContext(FavoritesContext);
   const navigate = useNavigate();
 
   const handleProfileClick = () => {
     navigate('/profile');
   };
 
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Dummy products – agar API ishlatilsa, axios orqali so'rovni o'zgartiring
+  const fetchProducts = async () => {
+    try {
+      const dummyProducts = [
+        { id: 1, name: "Product A", price: 100, image: "https://via.placeholder.com/400x300?text=Product+A" },
+        { id: 2, name: "Product B", price: 150, image: "https://via.placeholder.com/400x300?text=Product+B" },
+        { id: 3, name: "Product C", price: 250, image: "https://via.placeholder.com/400x300?text=Product+C" },
+        { id: 4, name: "Product D", price: 350, image: "https://via.placeholder.com/400x300?text=Product+D" },
+        { id: 5, name: "Product E", price: 200, image: "https://via.placeholder.com/400x300?text=Product+E" },
+        { id: 6, name: "Product F", price: 175, image: "https://via.placeholder.com/400x300?text=Product+F" },
+        { id: 7, name: "Product G", price: 225, image: "https://via.placeholder.com/400x300?text=Product+G" },
+        { id: 8, name: "Product H", price: 300, image: "https://via.placeholder.com/400x300?text=Product+H" },
+      ];
+      setProducts(dummyProducts);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      notification.error({
+        message: "Error loading products",
+        description: error.response?.data?.message || "Server error occurred.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative">
-      <div className="absolute inset-0">
+    <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} overflow-hidden`}>
+      {/* Hero / Banner Qismi: 100vh */}
+      <div className="h-screen relative">
         <img
-          src="https://source.unsplash.com/1600x900/?store"
-          alt="Banner"
-          className="object-cover w-full h-full opacity-30 transition duration-500"
+          src="https://source.unsplash.com/1600x900/?store,shopping"
+          alt="Hero Banner"
+          className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black opacity-20"></div>
-      </div>
-      <div className="relative z-10 text-center">
-        <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-          Welcome to Ashyo-Store
-        </h1>
-        <p className="text-xl md:text-2xl text-gray-200 mb-8">
-          Your modern online store experience
-        </p>
-      </div>
-      <div className="mt-8 w-full max-w-md relative z-10">
-        {user ? (
-          <Card
-            hoverable
-            className="cursor-pointer transition transform hover:scale-105 rounded-lg shadow-custom"
-            onClick={handleProfileClick}
-          >
-            <div className="flex items-center">
-              <Avatar 
-                size={60} 
-                icon={<UserOutlined />} 
-                src={user.avatar || 'https://via.placeholder.com/100'} 
-              />
-              <div className="ml-4">
-                <h2 className="text-xl font-bold">{user.name}</h2>
-                <p className="text-gray-600">{user.email}</p>
-              </div>
-            </div>
-          </Card>
-        ) : (
-          <Link to="/login">
-            <Button type="primary" block>
-              Login to view your profile
+        {/* Gradient overlay for readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-4">
+          <h1 className="text-5xl md:text-7xl font-extrabold drop-shadow-2xl text-center text-white">
+            Welcome to Ashyo-Store
+          </h1>
+          <p className="mt-4 text-xl md:text-2xl text-gray-200 text-center">
+            Experience a modern shopping revolution
+          </p>
+          <Link to="/products" className="mt-8">
+            <Button type="primary" size="large" icon={<SearchOutlined />}>
+              Explore Products
             </Button>
           </Link>
+          {user ? (
+            <Button onClick={handleProfileClick} type="link" className="mt-4">
+              Go to Profile
+            </Button>
+          ) : (
+            <Link to="/login" className="mt-4">
+              <Button type="link">Login</Button>
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {/* Mahsulotlar Slider Qismi: 100vh */}
+      <div className="h-screen flex flex-col justify-center px-10 bg-gray-100 dark:bg-gray-800 transition-colors">
+        <h2 className="text-3xl font-bold text-center mb-8">Featured Products</h2>
+        {loading ? (
+          <div className="flex justify-center items-center h-full">
+            <Spin size="large" />
+          </div>
+        ) : (
+          <Carousel autoplay dots className="h-full">
+            {products.map((product) => (
+              <div key={product.id} className="flex justify-center items-center h-full">
+                <div className="p-11">
+                  <Card
+                    hoverable
+                    className="w-{100%} m-auto rounded-lg shadow-xl overflow-hidden transform transition duration-500 hover:scale-105"
+                    style={{ width: 900 }}
+                    cover={
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-56 object-cover transition duration-300 hover:opacity-90"
+                      />
+                    }
+                  >
+                    <Card.Meta
+                      title={product.name}
+                      description={<span className="font-semibold">Price: ${product.price}</span>}
+                    />
+                    <div className="mt-4 flex flex-col gap-2">
+                      <Button
+                        onClick={() => addToCart(product)}
+                        type="primary"
+                        icon={<ShoppingCartOutlined />}
+                        className="w-full"
+                      >
+                        Add to Cart
+                      </Button>
+                      <Button
+                        onClick={() => toggleFavorite(product)}
+                        type="default"
+                        className="w-full flex items-center justify-center"
+                      >
+                        {isFavorite(product) ? (
+                          <>
+                            <HeartTwoTone twoToneColor="#eb2f96" className="mr-1" /> Liked
+                          </>
+                        ) : (
+                          <>
+                            <HeartOutlined className="mr-1" style={{ color: darkMode ? '#fff' : '#000' }} /> Like
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </Card>
+                </div>
+              </div>
+            ))}
+          </Carousel>
         )}
       </div>
     </div>

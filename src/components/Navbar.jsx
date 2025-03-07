@@ -1,22 +1,78 @@
+// src/components/Navbar.jsx
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { Menu, Dropdown, Button, Input, Badge } from 'antd';
+import {
+  UserOutlined,
+  LoginOutlined,
+  LogoutOutlined,
+  ShoppingCartOutlined,
+  SearchOutlined,
+  BellOutlined,
+  EnvironmentOutlined,
+  PhoneOutlined,
+  HeartOutlined,
+  MenuOutlined,
+  BulbOutlined,
+} from '@ant-design/icons';
 import { ThemeContext } from '../context/ThemeContext';
 import { CartContext } from '../context/CartContext';
-import { Button, Switch } from 'antd';
-import { 
-  LoginOutlined, 
-  LogoutOutlined, 
-  UserOutlined, 
-  ShoppingCartOutlined, 
-  BulbOutlined 
-} from '@ant-design/icons';
+import { FavoritesContext } from '../context/FavoritesContext';
+import { AuthContext } from '../context/AuthContext';
 
-const Navbar = () => {
-  const { user, logout } = useContext(AuthContext);
+const NavbarTop = () => (
+  <div className="flex justify-between items-center bg-gray-800 dark:bg-gray-900 text-white px-20 py-2">
+    <div className="flex items-center">
+      <EnvironmentOutlined className="mr-2" />
+      <span>Tashkent</span>
+    </div>
+    <div className="flex items-center gap-6">
+      <Link to="/about" className="p-2 hover:transition-colors hover:bg-slate-900 rounded-md hover:shadow-white">
+        About Us
+      </Link>
+      <Link to="/products" className="p-2 hover:transition-colors hover:bg-slate-900 rounded-md hover:shadow-white">
+        Products
+      </Link>
+      <Link to="/contacts" className="p-2 hover:transition-colors hover:bg-slate-900 rounded-md hover:shadow-white">
+        Contacts
+      </Link>
+    </div>
+    <div className="flex items-center">
+      <PhoneOutlined className="mr-2" />
+      <span>+998 (71) 123-45-67</span>
+    </div>
+    <div>
+      <Dropdown
+        overlay={
+          <Menu>
+            <Menu.Item key="1">Uz</Menu.Item>
+            <Menu.Item key="2">En</Menu.Item>
+            <Menu.Item key="3">Ru</Menu.Item>
+          </Menu>
+        }
+      >
+        <Button>
+          Uz <UserOutlined />
+        </Button>
+      </Dropdown>
+    </div>
+  </div>
+);
+
+const NavbarMain = () => {
   const { darkMode, toggleTheme } = useContext(ThemeContext);
   const { getTotalItems } = useContext(CartContext);
+  const { getFavoritesCount } = useContext(FavoritesContext);
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const categoriesMenu = (
+    <Menu>
+      <Menu.Item key="1">Category 1</Menu.Item>
+      <Menu.Item key="2">Category 2</Menu.Item>
+      <Menu.Item key="3">Category 3</Menu.Item>
+    </Menu>
+  );
 
   const handleLogout = () => {
     logout();
@@ -24,51 +80,97 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-gradient-to-r from-primary to-secondary shadow-lg text-white flex justify-between items-center py-4 px-6">
-      <div>
-        <Link to="/" className="mr-4 font-bold text-2xl">
-          Ashyo-Store
-        </Link>
+    <div className="flex justify-between items-center bg-white dark:bg-gray-800 shadow-md px-20 py-4">
+      {/* Logotip */}
+      <Link to="/" className="text-3xl font-bold">
+        <img src="path_to_logo" alt="Ashyo" className="h-10" />
+      </Link>
+
+      {/* Kategoriyalar dropdown */}
+      <Dropdown overlay={categoriesMenu}>
+        <Button>
+          Kategoriyalar <MenuOutlined />
+        </Button>
+      </Dropdown>
+
+      {/* Qidiruv paneli */}
+      <div className="flex items-center">
+        <Input placeholder="What are you looking for?" className="mr-2" />
+        <Button type="primary" icon={<SearchOutlined />}>
+          Search
+        </Button>
       </div>
-      <div className="flex items-center space-x-6">
-        <Switch
-          checked={darkMode}
-          onChange={toggleTheme}
-          checkedChildren={<BulbOutlined />}
-          unCheckedChildren={<BulbOutlined />}
-        />
-        <Link to="/products" className="p-2 rounded-md hover:bg-blue-800 text-gray-200 transition-colors flex items-center">
-          <ShoppingCartOutlined className="mr-1" /> Products
+
+      {/* Dark/Light toggle, auth havolalari, favorites, profile and cart */}
+      <div className="flex items-center gap-1">
+        <Button onClick={toggleTheme} className="mr-2 hover:border-blue-500 shadow transition" icon={<BulbOutlined />}>
+          {darkMode ? "Light Mode" : "Dark Mode"}
+        </Button>
+        <Link to="/notifications" className="mr-2 p-1 border rounded-md hover:border-blue-500 shadow transition">
+          <Badge count={2} color="red">
+            <BellOutlined className="text-xl" />
+          </Badge>
         </Link>
-        <Link to="/cart" className="p-2 rounded-md hover:bg-blue-800 text-gray-200 transition-colors flex items-center">
-          <ShoppingCartOutlined className="mr-1" /> Cart ({getTotalItems()})
+        <Link to="/favorites" className="mr-2 p-1 border rounded-md hover:border-blue-500 shadow transition">
+          <Badge count={getFavoritesCount()} color="red">
+            <HeartOutlined className="text-xl" />
+          </Badge>
         </Link>
+        <Link to="/cart" className="mr-2 p-1 border rounded-md hover:border-blue-500 shadow transition">
+          <Badge count={getTotalItems()} color="red">
+            <ShoppingCartOutlined className="text-xl" />
+          </Badge>
+        </Link>
+
         {user ? (
           <>
-            <Link to="/profile" className="p-2 rounded-md hover:bg-blue-800 text-gray-200 transition-colors flex items-center">
-              <UserOutlined className="mr-1" /> Profile
+            {/* Profile link appears before logout */}
+            <Link to="/profile" className="mr-2 p-1 border rounded-md hover:border-blue-500 shadow transition">
+              <span className="flex items-center">
+                <UserOutlined className="text-xl mr-1" />
+              </span>
             </Link>
-            <Button 
-              type="primary" 
-              onClick={handleLogout} 
-              icon={<LogoutOutlined />}
-            >
+            <Button onClick={handleLogout} type="primary" icon={<LogoutOutlined />}>
               Logout
             </Button>
           </>
         ) : (
           <>
-            <Link to="/login" className="p-2 rounded-md hover:bg-blue-800 text-gray-200 transition-colors flex items-center">
-              <LoginOutlined className="mr-1" /> Login
+            <Link to="/login" className="mr-2">
+              <Button type="primary" icon={<LoginOutlined />}>
+                Login
+              </Button>
             </Link>
-            <Link to="/register" className="p-2 rounded-md hover:bg-blue-800 text-gray-200 transition-colors flex items-center">
-              <UserOutlined className="mr-1" /> Register
+            <Link to="/register" className="mr-2">
+              <Button type="default" icon={<UserOutlined />}>
+                Register
+              </Button>
             </Link>
           </>
         )}
       </div>
-    </nav>
+    </div>
   );
 };
+
+const NavbarCategories = () => (
+  <div className="flex justify-center gap-2 bg-gray-200 dark:bg-gray-700 py-2">
+    <Link to="/deals" className="mx-2 hover:text-gray-600 dark:hover:text-gray-300">Aksiyalar</Link>
+    <Link to="/smartphones" className="mx-2 hover:text-gray-600 dark:hover:text-gray-300">Smartfonlar</Link>
+    <Link to="/laptops" className="mx-2 hover:text-gray-600 dark:hover:text-gray-300">Noutbooklar</Link>
+    <Link to="/air-conditioners" className="mx-2 hover:text-gray-600 dark:hover:text-gray-300">Konditsionerlar</Link>
+    <Link to="/televisions" className="mx-2 hover:text-gray-600 dark:hover:text-gray-300">Telivizorlar</Link>
+    <Link to="/refrigerators" className="mx-2 hover:text-gray-600 dark:hover:text-gray-300">Muzlatgichlar</Link>
+    <Link to="/washing-machines" className="mx-2 hover:text-gray-600 dark:hover:text-gray-300">Kir yuvish mashinalari</Link>
+  </div>
+);
+
+const Navbar = () => (
+  <header>
+    <NavbarTop />
+    <NavbarMain />
+    <NavbarCategories />
+  </header>
+);
 
 export default Navbar;
