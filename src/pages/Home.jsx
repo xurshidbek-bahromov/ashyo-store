@@ -31,14 +31,14 @@ const Home = () => {
   const fetchProducts = async () => {
     try {
       const dummyProducts = [
-        { id: 1, name: "Product A", price: 100, image: "https://via.placeholder.com/400x300?text=Product+A" },
-        { id: 2, name: "Product B", price: 150, image: "https://via.placeholder.com/400x300?text=Product+B" },
-        { id: 3, name: "Product C", price: 250, image: "https://via.placeholder.com/400x300?text=Product+C" },
-        { id: 4, name: "Product D", price: 350, image: "https://via.placeholder.com/400x300?text=Product+D" },
-        { id: 5, name: "Product E", price: 200, image: "https://via.placeholder.com/400x300?text=Product+E" },
-        { id: 6, name: "Product F", price: 175, image: "https://via.placeholder.com/400x300?text=Product+F" },
-        { id: 7, name: "Product G", price: 225, image: "https://via.placeholder.com/400x300?text=Product+G" },
-        { id: 8, name: "Product H", price: 300, image: "https://via.placeholder.com/400x300?text=Product+H" },
+        { id: 1, name: "Product A", price: 100, image: "https://avatars.mds.yandex.net/i?id=2ebed25d49a2ec71e61d58974848f66a_l-5390742-images-thumbs&n=13" },
+        { id: 2, name: "Product B", price: 150, image: "https://avatars.mds.yandex.net/i?id=2ebed25d49a2ec71e61d58974848f66a_l-5390742-images-thumbs&n=13" },
+        { id: 3, name: "Product C", price: 250, image: "https://avatars.mds.yandex.net/i?id=2ebed25d49a2ec71e61d58974848f66a_l-5390742-images-thumbs&n=13" },
+        { id: 4, name: "Product D", price: 350, image: "https://avatars.mds.yandex.net/i?id=2ebed25d49a2ec71e61d58974848f66a_l-5390742-images-thumbs&n=13" },
+        { id: 5, name: "Product E", price: 200, image: "https://avatars.mds.yandex.net/i?id=2ebed25d49a2ec71e61d58974848f66a_l-5390742-images-thumbs&n=13" },
+        { id: 6, name: "Product F", price: 175, image: "https://avatars.mds.yandex.net/i?id=2ebed25d49a2ec71e61d58974848f66a_l-5390742-images-thumbs&n=13" },
+        { id: 7, name: "Product G", price: 225, image: "https://avatars.mds.yandex.net/i?id=2ebed25d49a2ec71e61d58974848f66a_l-5390742-images-thumbs&n=13" },
+        { id: 8, name: "Product H", price: 300, image: "https://avatars.mds.yandex.net/i?id=2ebed25d49a2ec71e61d58974848f66a_l-5390742-images-thumbs&n=13" },
       ];
       setProducts(dummyProducts);
     } catch (error) {
@@ -61,7 +61,7 @@ const Home = () => {
       {/* Hero / Banner Qismi: 100vh */}
       <div className="h-screen relative">
         <img
-          src="https://source.unsplash.com/1600x900/?store,shopping"
+          src="./images/hero-banner.jpg"
           alt="Hero Banner"
           className="w-full h-full object-cover"
         />

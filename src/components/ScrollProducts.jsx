@@ -14,10 +14,10 @@ const ScrollProducts = () => {
     try {
       // API qo'llanilishi mumkin. Quyidagi dummy data misoli:
       const dummyProducts = [
-        { id: 1, name: "Mahsulot 1", price: 100, image: "https://via.placeholder.com/200" },
-        { id: 2, name: "Mahsulot 2", price: 150, image: "https://via.placeholder.com/200" },
-        { id: 3, name: "Mahsulot 3", price: 250, image: "https://via.placeholder.com/200" },
-        { id: 4, name: "Mahsulot 4", price: 300, image: "https://via.placeholder.com/200" },
+        { id: 1, name: "Mahsulot 1", price: 100, image: "https://avatars.mds.yandex.net/i?id=2ebed25d49a2ec71e61d58974848f66a_l-5390742-images-thumbs&n=13" },
+        { id: 2, name: "Mahsulot 2", price: 150, image: "https://avatars.mds.yandex.net/i?id=2ebed25d49a2ec71e61d58974848f66a_l-5390742-images-thumbs&n=13" },
+        { id: 3, name: "Mahsulot 3", price: 250, image: "https://avatars.mds.yandex.net/i?id=2ebed25d49a2ec71e61d58974848f66a_l-5390742-images-thumbs&n=13" },
+        { id: 4, name: "Mahsulot 4", price: 300, image: "https://avatars.mds.yandex.net/i?id=2ebed25d49a2ec71e61d58974848f66a_l-5390742-images-thumbs&n=13" },
       ];
       setProducts(dummyProducts);
     } catch (error) {

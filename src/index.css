@@ -5,4 +5,4 @@
 /* Global body uchun sozlamalar */
 body {
   @apply font-sans bg-background text-gray-800 transition-all duration-300;
-}
+} 
