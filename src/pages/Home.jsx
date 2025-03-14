@@ -61,7 +61,7 @@ const Home = () => {
       {/* Hero / Banner Qismi: 100vh */}
       <div className="h-screen relative">
         <img
-          src="./images/hero-banner.jpg"
+          src="https://sun9-17.userapi.com/impg/DQRMNx7QI76jkV3XhYoAHOogneb7jaGsCVS1PA/jKbnHqI8haY.jpg?size=1920x876&quality=95&sign=13e3dbdfd9751cafee999d77ebb25197&type=album"
           alt="Hero Banner"
           className="w-full h-full object-cover"
         />

@@ -82,8 +82,8 @@ const NavbarMain = () => {
   return (
     <div className="flex justify-between items-center bg-white dark:bg-gray-800 shadow-md px-20 py-4">
       {/* Logotip */}
-      <Link to="/" className="text-3xl font-bold">
-        <img src="path_to_logo" alt="Ashyo" className="h-10" />
+      <Link to="/" className="text-3xl font-bold flex">
+        <img src="https://i.pinimg.com/originals/e1/49/9d/e1499dcf8c44c275f213eca5e9202bf4.jpg" alt="Ashyo" className="h-10" /><span>Ashyo</span>
       </Link>
 
       {/* Kategoriyalar dropdown */}
